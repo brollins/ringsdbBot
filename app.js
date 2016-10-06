@@ -27,7 +27,7 @@ intents.matches(/^get card/i, [
 
 bot.dialog('/search', [
     function(session) {
-        builder.Prompts.text(session, "Speak card and enter");
+        builder.Prompts.text(session, "Speak Card and Enter...");
     },
     function (session, results) {
         rings.getMatches(results.response, function (matches) {

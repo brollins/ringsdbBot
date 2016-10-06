@@ -21,7 +21,8 @@ function getMatches (input, callback) {
     getCards(function (collection) {
         var results = [];
         for (var card of collection) {
-            if (decode(card.name.toLowerCase()) == input.toLowerCase()) {
+            console.log(decode(card.name.toLowerCase()));
+            if (decode(card.name.toLowerCase()).includes(input.toLowerCase())) {
                 results.push(`http://www.ringsdb.com/bundles/cards/${card.code}.png`);
             }
         }

@@ -30,12 +30,13 @@ bot.dialog('/search', [
         builder.Prompts.text(session, "Speak Card and Enter...");
     },
     function (session, results) {
-        rings.getMatches(results.response, function (matches) {
-            for (var match of matches) {
-                session.send(match);
-            }
+        rings.getMatches(session, results.response, function (matches) {
+            var reply = new builder.Message(session)
+                .attachmentLayout(builder.AttachmentLayout.carousel)
+                .attachments(matches);
+
+            session.send(reply);
             session.endDialog();
         })
     }
 ]);
-

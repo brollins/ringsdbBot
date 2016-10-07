@@ -20,23 +20,29 @@ var intents = new builder.IntentDialog();
 bot.dialog('/', intents);
 
 intents.matches(/^get card/i, [
-    function(session) {
+    function (session) {
         session.beginDialog('/search');
     },
 ]);
 
 bot.dialog('/search', [
-    function(session) {
+    function (session) {
         builder.Prompts.text(session, "Speak Card and Enter...");
     },
     function (session, results) {
         rings.getMatches(session, results.response, function (matches) {
-            var reply = new builder.Message(session)
-                .attachmentLayout(builder.AttachmentLayout.carousel)
-                .attachments(matches);
+            if (matches.length > 0) {
+                var reply = new builder.Message(session)
+                    .attachmentLayout(builder.AttachmentLayout.carousel)
+                    .attachments(matches);
 
-            session.send(reply);
-            session.endDialog();
+                session.send(reply);
+                session.endDialog();
+            }
+            else {
+                session.send('No results found, please try again.');
+                session.endDialog();
+            }
         })
     }
 ]);

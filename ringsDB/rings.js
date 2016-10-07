@@ -23,7 +23,7 @@ function getMatches (session, input, callback) {
         var results = [];
         for (var card of collection) {
             if (decode(card.name.toLowerCase()).includes(input.toLowerCase())) {
-                results.push(new builder.HeroCard(session)
+                results.push(new builder.ThumbnailCard(session)
                     .images([
                         builder.CardImage.create(session, `http://ringsdb.com/bundles/cards/${card.code}.png`)
                     ]));

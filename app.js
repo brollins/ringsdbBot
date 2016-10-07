@@ -32,7 +32,9 @@ bot.dialog('/search', [
     function (session, results) {
         rings.getMatches(results.response, function (matches) {
             for (var match of matches) {
-                session.send(match);
+                var msg = new builder.Message(session)
+                    .addAttachment(match);
+                session.send(msg);
             }
             session.endDialog();
         })

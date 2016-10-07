@@ -20,29 +20,24 @@ var intents = new builder.IntentDialog();
 bot.dialog('/', intents);
 
 intents.matches(/^get card/i, [
-    function (session) {
+    function(session) {
         session.beginDialog('/search');
     },
 ]);
 
 bot.dialog('/search', [
-    function (session) {
-        builder.Prompts.text(session, "Speak Card and Enter...");
+    function(session) {
+        builder.Prompts.text(session, "Speak card and enter");
     },
     function (session, results) {
-        rings.getMatches(session, results.response, function (matches) {
-            if (matches.length > 0) {
-                var reply = new builder.Message(session)
-                    .attachmentLayout(builder.AttachmentLayout.carousel)
-                    .attachments(matches);
-
-                session.send(reply);
-                session.endDialog();
+        rings.getMatches(results.response, function (matches) {
+            for (var match of matches) {
+                var msg = new builder.Message(session)
+                    .addAttachment(match);
+                session.send(msg);
             }
-            else {
-                session.send('No results found, please try again.');
-                session.endDialog();
-            }
+            session.endDialog();
         })
     }
 ]);
+

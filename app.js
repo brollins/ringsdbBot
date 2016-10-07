@@ -25,6 +25,12 @@ intents.matches(/^get card/i, [
     },
 ]);
 
+intents.matches(/^carousel/i, [
+    function(session) {
+        session.beginDialog('/carousel');
+    },
+]);
+
 bot.dialog('/search', [
     function(session) {
         builder.Prompts.text(session, "Speak Card and Enter...");
@@ -38,4 +44,16 @@ bot.dialog('/search', [
         })
     }
 ]);
+
+bot.dialog('/carousel', function (session) {
+    var cards = rings.getCardsAttachments();
+
+    // create reply with Carousel AttachmentLayout
+    var reply = new builder.Message(session)
+        .attachmentLayout(builder.AttachmentLayout.carousel)
+        .attachments(cards);
+
+    session.send(reply);
+    session.endDialog();
+});
 

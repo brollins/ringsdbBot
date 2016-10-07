@@ -25,35 +25,18 @@ intents.matches(/^get card/i, [
     },
 ]);
 
-intents.matches(/^carousel/i, [
-    function(session) {
-        session.beginDialog('/carousel');
-    },
-]);
-
 bot.dialog('/search', [
     function(session) {
         builder.Prompts.text(session, "Speak Card and Enter...");
     },
     function (session, results) {
-        rings.getMatches(results.response, function (matches) {
-            for (var match of matches) {
-                session.send(match);
-            }
+        rings.getMatches(session, results.response, function (matches) {
+            var reply = new builder.Message(session)
+                .attachmentLayout(builder.AttachmentLayout.carousel)
+                .attachments(matches);
+
+            session.send(reply);
             session.endDialog();
         })
     }
 ]);
-
-bot.dialog('/carousel', function (session) {
-    var cards = rings.getCardsAttachments();
-
-    // create reply with Carousel AttachmentLayout
-    var reply = new builder.Message(session)
-        .attachmentLayout(builder.AttachmentLayout.carousel)
-        .attachments(cards);
-
-    session.send(reply);
-    session.endDialog();
-});
-
